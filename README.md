@@ -13,12 +13,12 @@ minimize to tray, system tray, Chinese translation, localized, Windows 10/11, �
 
 ## 直接下载就能用 / Download
 
-到 **Releases** 页面下载，两种任选：
+到 **[Releases 页面](https://github.com/Jonah-77/rbtray/releases/latest)** 下载，两种任选：
 
 | 资产 | 用途 |
 |---|---|
-| `RBTray-4.14-简体中文版-安装.exe` | 单文件安装器，双击自动检测现有安装、备份原版、就地替换、保持开机自启，可一键还原 |
-| `RBTray-4.14-简体中文版-绿色版.zip` | 免安装。解压后进 `x64`（或 `x86`）目录双击 `RBTray.exe` 即用 |
+| `RBTray-4.14-zh-CN-Setup.exe` | 单文件安装器，双击自动检测现有安装、备份原版、就地替换、保持开机自启，可一键还原 |
+| `RBTray-4.14-zh-CN-Portable.zip` | 免安装。解压后进 `x64`（或 `x86`）目录双击 `RBTray.exe` 即用 |
 
 两个都是 **x64 + x86 双版本**。安装器未做数字签名（官方同样未签名），
 SmartScreen 若提示，点「更多信息 → 仍要运行」。
