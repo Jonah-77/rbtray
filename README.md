@@ -13,12 +13,12 @@ minimize to tray, system tray, Chinese translation, localized, Windows 10/11, �
 
 ## 直接下载就能用 / Download
 
-到 **[Releases 页面](https://github.com/Jonah-77/rbtray/releases/latest)** 下载，两种任选：
+到 **Releases** 页面下载，两种任选：
 
 | 资产 | 用途 |
 |---|---|
-| `RBTray-4.14-zh-CN-Setup.exe` | 单文件安装器，双击自动检测现有安装、备份原版、就地替换、保持开机自启，可一键还原 |
-| `RBTray-4.14-zh-CN-Portable.zip` | 免安装。解压后进 `x64`（或 `x86`）目录双击 `RBTray.exe` 即用 |
+| `RBTray-4.14-简体中文版-安装.exe` | 单文件安装器，双击自动检测现有安装、备份原版、就地替换、保持开机自启，可一键还原 |
+| `RBTray-4.14-简体中文版-绿色版.zip` | 免安装。解压后进 `x64`（或 `x86`）目录双击 `RBTray.exe` 即用 |
 
 两个都是 **x64 + x86 双版本**。安装器未做数字签名（官方同样未签名），
 SmartScreen 若提示，点「更多信息 → 仍要运行」。
@@ -78,3 +78,16 @@ link /SUBSYSTEM:WINDOWS RBTray.obj RBTray.res RBHook.lib user32.lib shell32.lib
 **GPL v2 or later**，见 `LICENSE.txt`。本仓库是 fork，保留原作者全部版权声明：
 Nikolay Redko, J.D. Purcell, Benbuck Nason。汉化部分同样以 GPL 发布。
 非官方版本，与上游作者无关。
+
+## r2 修复：托盘关闭窗口后图标残留
+
+上游 v4.14 的 `CloseWindowFromTray()` 在 UI 线程 `Sleep(100ms)`，只在这 100ms 内
+判断窗口是否销毁；程序稍慢退出、弹「是否保存」、或 `WM_NCDESTROY` 未被钩子捕获时，
+图标会永久残留，且 Sleep 会冻结 UI 线程。上游 main 分支与 130 条 issues/PR 中从未修复。
+
+本版只改 `RBTray.cpp`：删掉 Sleep，改用 `SetTimer` 每 200ms 异步复查，窗口真正
+销毁即删图标；用 64 位位图标记待确认槽位，全部收敛或 30 秒兜底即 KillTimer。
+静态新增仅 12 字节、全局单 timer、空闲零开销、不依赖 RBHook.dll。
+**FileVersion / ProductVersion 仍为 4.14.0.0**。
+
+下载请走 [Releases 最新版](https://github.com/Jonah-77/rbtray/releases/latest)。
