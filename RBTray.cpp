@@ -1,7 +1,8 @@
 ﻿// ****************************************************************************
 //
-// RBTray —— 简体中文汉化版 (Simplified Chinese localization)
-// 基于官方 v4.14 源码，仅翻译界面字符串，逻辑代码未改动。
+// RBTray —— 简体中文版 / Simplified Chinese
+// 基于官方 v4.14：界面文字中文化 + 修复「托盘关闭窗口后图标残留」。
+// 其余逻辑与官方一致。热键 Ctrl+Alt+↓ 由代码固定，不可配置。
 // Copyright (C) 1998-2010  Nikolay Redko, J.D. Purcell
 // Copyright (C) 2015 Benbuck Nason
 //
@@ -29,12 +30,20 @@
 
 static UINT WM_TASKBAR_CREATED;
 
-// 提示：热键 Ctrl+Alt+↓ 由代码固定，不可配置
 static HINSTANCE _hInstance;
 static HMODULE _hLib;
 static HWND _hwndHook;
 static HWND _hwndItems[MAXTRAYITEMS];
 static HWND _hwndForMenu;
+
+// 「关闭窗口」后的延迟复查。_closePending 的 bit i 表示托盘槽位 i 的窗口
+// 刚被要求关闭、尚未确认销毁；全部收敛或达到上限即 KillTimer。
+#define CLOSE_POLL_TIMER_ID    0x2000
+#define CLOSE_POLL_INTERVAL_MS 200
+#define CLOSE_POLL_MAX_TICKS   150   // 上限 30 秒，程序拒绝关闭时也不会常驻轮询
+static DWORD64 _closePending = 0;
+static int     _closePollTicks = 0;
+static void CALLBACK ClosePollProc(HWND, UINT, UINT_PTR, DWORD);
 
 int FindInTray(HWND hwnd) {
     for (int i = 0; i < MAXTRAYITEMS; i++) {
@@ -152,18 +161,22 @@ static void RestoreWindowFromTray(HWND hwnd) {
 }
 
 static void CloseWindowFromTray(HWND hwnd) {
+    // 修复上游 v4.14 的缺陷：原实现在 UI 线程 Sleep(100ms)，只在这 100ms 内
+    // 判断窗口是否销毁。程序稍慢退出、弹「是否保存」对话框、或 WM_NCDESTROY
+    // 未被钩子捕获（DLL 位数不匹配 / UWP / --no-hook）时，图标会永久残留；
+    // 且 Sleep 会冻结整个 UI 线程，期间托盘点击与热键无响应。
+    //
+    // 改为「全局单 timer + 位图」异步复查：只复查等待关闭的窗口，
+    // 空闲时零 timer、零开销；不阻塞 UI 线程、不依赖 RBHook.dll。
     // Use PostMessage to avoid blocking if the program brings up a dialog on exit.
     // Also, Explorer windows ignore WM_CLOSE messages from SendMessage.
     PostMessage(hwnd, WM_CLOSE, 0, 0);
-
-    Sleep(50);
-    if (IsWindow(hwnd)) {
-        Sleep(50);
-    }
-
-    if (!IsWindow(hwnd)) {
-        // Closed successfully
-        RemoveWindowFromTray(hwnd);
+    int i = FindInTray(hwnd);
+    if (i != -1) {
+        _closePending |= ((DWORD64)1 << i);
+        _closePollTicks = 0;
+        SetTimer(_hwndHook, CLOSE_POLL_TIMER_ID, CLOSE_POLL_INTERVAL_MS,
+                 (TIMERPROC)ClosePollProc);
     }
 }
 
@@ -183,6 +196,28 @@ void RefreshWindowInTray(HWND hwnd) {
         nid.uFlags = NIF_TIP;
         GetWindowText(hwnd, nid.szTip, sizeof(nid.szTip) / sizeof(nid.szTip[0]));
         Shell_NotifyIcon(NIM_MODIFY, &nid);
+    }
+}
+
+// 只复查「等待关闭确认」的槽位。RefreshWindowInTray 的语义：
+// 窗口已销毁 -> 删图标；窗口重新可见（用户取消关闭）-> 删图标；
+// 窗口仍隐藏存活 -> 保留图标。被清掉的槽位即位清除；
+// 位图归零或达到上限即 KillTimer，绝不留下后台常驻轮询。
+static void CALLBACK ClosePollProc(HWND, UINT, UINT_PTR idEvent, DWORD) {
+    for (int i = 0; i < MAXTRAYITEMS; i++) {
+        if (!(_closePending & ((DWORD64)1 << i))) continue;
+        if (!_hwndItems[i]) {                       // 槽位已被清空
+            _closePending &= ~((DWORD64)1 << i);
+            continue;
+        }
+        RefreshWindowInTray(_hwndItems[i]);
+        if (!_hwndItems[i])                         // 图标已删除
+            _closePending &= ~((DWORD64)1 << i);
+    }
+    if (!_closePending || ++_closePollTicks >= CLOSE_POLL_MAX_TICKS) {
+        KillTimer(_hwndHook, idEvent);
+        _closePending = 0;
+        _closePollTicks = 0;
     }
 }
 
