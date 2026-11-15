@@ -1,85 +1,80 @@
-# RBTray
+# RBTray 4.14 简体中文版 / Simplified Chinese
 
-RBTray is a small Windows program that runs in the background and allows almost
-any window to be minimized to the system tray by:
+> 非官方汉化版 · 基于 [benbuck/rbtray](https://github.com/benbuck/rbtray) **v4.14**（上游最后一版，已维护模式）。
+> 本仓库是该项目的 fork，**只把界面文字改为简体中文，程序逻辑与官方 v4.14 完全一致，零改动**。
 
-- Right-clicking its minimize button
-- Shift-right-clicking its title bar
-- Using the Control-Alt-Down hotkey
+RBTray 是一个极小的 Windows 常驻工具：把任意窗口**最小化到系统托盘**，让任务栏保持干净。
+本汉化版面向中文用户，托盘菜单、错误提示、「关于」对话框全部中文化。
 
-Note that not all of these methods will work for every window, so please use
-whichever one works for your needs.
+**关键词 / Keywords**: RBTray 汉化, RBTray 中文版, 最小化到托盘, 简体中文,
+minimize to tray, system tray, Chinese translation, localized, Windows 10/11, 绿色版, 便携版
 
-RBTray is free, open source, and is distributed under the terms of the [GNU
-General Public Licence](http://www.gnu.org/copyleft/gpl.html).
+---
 
-## Download
+## 直接下载就能用 / Download
 
-- [64 bit binaries](x64)
-- [32 bit binaries](x86)
-- [Original RBTray](https://sourceforge.net/projects/rbtray/files/)
+到 **Releases** 页面下载，两种任选：
 
-## Installing
+| 资产 | 用途 |
+|---|---|
+| `RBTray-4.14-简体中文版-安装.exe` | 单文件安装器，双击自动检测现有安装、备份原版、就地替换、保持开机自启，可一键还原 |
+| `RBTray-4.14-简体中文版-绿色版.zip` | 免安装。解压后进 `x64`（或 `x86`）目录双击 `RBTray.exe` 即用 |
 
-Download either the 32-bit or 64-bit binaries (depending on your OS) to a folder,
-for example "`C:\Program Files\RBTray`". Double click RBTray.exe to start it. If
-you want it to automatically start after you reboot, create a shortcut to
-RBTray.exe in your Start menu's Startup group.
+两个都是 **x64 + x86 双版本**。安装器未做数字签名（官方同样未签名），
+SmartScreen 若提示，点「更多信息 → 仍要运行」。
 
-On Windows 10 that is located at
-`"C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"`
+## 使用方法
 
-But a **_much_** quicker way to access it is to press "`WIN` + `R`" then type
-(or copy & paste) `shell:Startup`
+- **右键**点击窗口的最小化按钮
+- 按住 **Shift** 右键点击标题栏
+- **Ctrl + Alt + ↓**
 
-## Using
+托盘里单击图标还原窗口；右键图标弹出中文菜单（关于 RBTray / 退出 RBTray / 关闭窗口 / 还原窗口）。
+若与其他钩子类软件冲突，快捷方式加 `--no-hook`，则只保留 `Ctrl+Alt+↓`。
 
-To minimize a program to the system tray, you can use any of these methods:
+## 汉化范围
 
-- Right-click with the mouse on the program's minimize button.
-- Hold down a Shift key while right-clicking on the program's title bar.
-- Pressing Control-Alt-Down on the keyboard (all at the same time).
+| 位置 | 变化 |
+|---|---|
+| 托盘右键菜单 4 项 | About/Exit/Restore/Close → 关于 RBTray / 退出 RBTray / 还原窗口 / 关闭窗口 |
+| 运行期提示 7 条 | 创建菜单失败、已在运行中、加载 RBHook.dll 失败、安装鼠标钩子失败、注册窗口类失败、创建窗口失败、注册热键失败（含占用提示） |
+| 关于对话框 | 标题、许可证说明、版权行、确定按钮；字体 Microsoft YaHei UI 9pt，版面加宽 |
+| 文件版本说明 | 追加「最小化到系统托盘 · 简体中文版」 |
 
-This should create an icon for the window in the system tray. To restore the
-program's window, single-click the program's icon in the tray. Alternatively,
-you can right-click on the tray icon which will bring up a popup menu, then
-select **Restore Window**.
+保留英文：作者姓名、网址、`LegalCopyright` 法律版权文本（不翻译法律文本）。
 
-In some cases, the first two methods cause problems with other software because
-of they way they integrate into Windows using a hook to intercept mouse events.
-In these cases, you can use the `--no-hook` option, which means that only the
-last method of using the Control-Alt-Down hotkey will work. Also in this case
-the RBHook.dll isn't needed since it only exists to support the mouse event
-hook.
+**源码改动仅两个文件**：`RBTray.cpp`（UTF-8 BOM，`cl /utf-8`）与
+`RBTray.rc`（GBK + `#pragma code_page(936)`，`LANG_CHINESE/SUBLANG_CHINESE_SIMPLIFIED`）。
+`RBHook.cpp` 及全部工程文件与上游 v4.14 完全一致 —— 该 DLL 内没有任何界面文字，
+因此汉化不需要替换它（也避免了全局钩子 DLL 被进程占用无法覆写的问题）。
 
-## Exiting
+## 与官方 / 其他中文版的区别
 
-Right-click on any tray icon created by RBTray and click **Exit RBTray** in the
-popup menu, or run RBTray.exe with the `--exit` parameter.
+| | 官方 v4.14 | scavin v4.15 | 本版 |
+|---|---|---|---|
+| 界面 | 英文 | 菜单+About 按钮中文，错误提示仍英文 | 全部中文 |
+| 核心逻辑 | — | 改了最小化/还原（`SW_MINIMIZE`/`SW_RESTORE`）、升版本号、加第三方署名 | **与官方零改动** |
+| 交付 | 裸 zip | 裸 zip | 安装器 + 绿色版 + 备份/还原 |
 
-## Authors
+## 构建
 
-Nikolay Redko: <http://rbtray.sourceforge.net/>, <https://github.com/nredko>
+MSVC (v14.5x) + Windows SDK 10，Unicode (`/DUNICODE /D_UNICODE`)：
 
-J.D. Purcell: <http://www.moitah.net/>, <https://github.com/jdpurcell>
+```
+cl /c /O2 /MT /DUNICODE /D_UNICODE /utf-8 RBTray.cpp RBHook.cpp
+rc /fo RBTray.res RBTray.rc            # rc.exe 按 code_page(936) 解析
+link /DLL  RBHook.obj  -> RBHook.dll    # 生成导入库
+link /SUBSYSTEM:WINDOWS RBTray.obj RBTray.res RBHook.lib user32.lib shell32.lib
+```
 
-Benbuck Nason: <https://github.com/benbuck>
+## 已知限制（沿用上游）
 
-## Contributors
+- UWP / 商店应用（如 WhatsApp）无法正确最小化
+- 托盘最多同时挂 64 个窗口
+- `Ctrl+Alt+↓` 可能被显卡「旋转屏幕」热键占用
 
-Dimitri Pappas <https://github.com/fragtion>
+## 许可与致谢
 
-Ondrej Petrzilka <https://github.com/OndrejPetrzilka>
-
-Andrzej Włoszczyński <https://github.com/Andrzej-W>
-
-Hugo Locurcio <https://github.com/Calinou>
-
-## Other
-
-For original forum, bug tracker, etc. see [RBTray SourceForge project page]
-(<http://sourceforge.net/projects/rbtray/>).
-
-Copyright &copy; 1998-2011 Nikolay Redko, J.D. Purcell
-
-Copyright &copy; 2015 Benbuck Nason
+**GPL v2 or later**，见 `LICENSE.txt`。本仓库是 fork，保留原作者全部版权声明：
+Nikolay Redko, J.D. Purcell, Benbuck Nason。汉化部分同样以 GPL 发布。
+非官方版本，与上游作者无关。

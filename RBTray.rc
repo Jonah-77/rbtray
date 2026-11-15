@@ -13,11 +13,11 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (United States) resources
+// 简体中文资源 / Simplified Chinese (PRC) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
-LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-#pragma code_page(1252)
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -50,20 +50,20 @@ END
 // Dialog
 //
 
-IDD_ABOUT DIALOGEX 0, 0, 199, 145
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "About RBTray"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
+IDD_ABOUT DIALOGEX 0, 0, 239, 170
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 RBTray"
+FONT 9, "Microsoft YaHei UI", 400, 0, 0x1
 BEGIN
     ICON            IDI_RBTRAY,IDC_STATIC,7,7,20,20
-    LTEXT           "RBTray 4.14\nhttps://github.com/benbuck/rbtray",IDC_STATIC,38,7,151,20
-    LTEXT           "This program is distributed under the GNU General Public License.",IDC_STATIC,38,27,151,20
-    LTEXT           "Copyright (c) 1998-2011",IDC_STATIC,38,47,151,10
-    LTEXT           "Nikolay Redko\r\nhttp://rbtray.sourceforge.net/",IDC_STATIC,38,56,151,20
-    LTEXT           "J.D. Purcell\r\nhttp://www.moitah.net/",IDC_STATIC,38,72,151,20
-    LTEXT           "Copyright (c) 2015",IDC_STATIC,38,92,151,10
-    LTEXT           "Benbuck Nason\r\nhttps://github.com/benbuck/",IDC_STATIC,38,100,151,20
-    DEFPUSHBUTTON   "OK",IDOK,75,125,50,14
+    LTEXT           "RBTray 4.14 · 简体中文版\nhttps://github.com/benbuck/rbtray",IDC_STATIC,38,7,194,22
+    LTEXT           "本程序遵循 GNU 通用公共许可证 (GPL) 发布。",IDC_STATIC,38,32,194,12
+    LTEXT           "版权所有 (c) 1998-2011",IDC_STATIC,38,48,194,10
+    LTEXT           "Nikolay Redko\r\nhttp://rbtray.sourceforge.net/",IDC_STATIC,38,59,194,20
+    LTEXT           "J.D. Purcell\r\nhttp://www.moitah.net/",IDC_STATIC,38,79,194,20
+    LTEXT           "版权所有 (c) 2015",IDC_STATIC,38,101,194,10
+    LTEXT           "Benbuck Nason\r\nhttps://github.com/benbuck/",IDC_STATIC,38,112,194,20
+    DEFPUSHBUTTON   "确定",IDOK,94,146,50,16
 END
 
 
@@ -116,9 +116,9 @@ VS_VERSION_INFO VERSIONINFO
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
-        BLOCK "040904b0"
+        BLOCK "080404b0"
         BEGIN
-            VALUE "FileDescription", "RBTray"
+            VALUE "FileDescription", "RBTray (最小化到系统托盘 · 简体中文版)"
             VALUE "FileVersion", "4.14.0.0"
             VALUE "InternalName", "RBTray"
             VALUE "LegalCopyright", "Copyright (c) 1998-2011 Nikolay Redko, J.D. Purcell; Copyright (c) 2015 Benbuck Nason"
@@ -129,7 +129,7 @@ BEGIN
     END
     BLOCK "VarFileInfo"
     BEGIN
-        VALUE "Translation", 0x409, 1200
+        VALUE "Translation", 0x804, 1200
     END
 END
 
@@ -144,7 +144,7 @@ BEGIN
     0
 END
 
-#endif    // English (United States) resources
+#endif    // 简体中文资源 / Simplified Chinese (PRC) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

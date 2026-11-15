@@ -1,6 +1,7 @@
-// ****************************************************************************
+﻿// ****************************************************************************
 //
-// RBTray
+// RBTray —— 简体中文汉化版 (Simplified Chinese localization)
+// 基于官方 v4.14 源码，仅翻译界面字符串，逻辑代码未改动。
 // Copyright (C) 1998-2010  Nikolay Redko, J.D. Purcell
 // Copyright (C) 2015 Benbuck Nason
 //
@@ -28,6 +29,7 @@
 
 static UINT WM_TASKBAR_CREATED;
 
+// 提示：热键 Ctrl+Alt+↓ 由代码固定，不可配置
 static HINSTANCE _hInstance;
 static HMODULE _hLib;
 static HWND _hwndHook;
@@ -190,14 +192,14 @@ void ExecuteMenu() {
 
     hMenu = CreatePopupMenu();
     if (!hMenu) {
-        MessageBox(NULL, L"Error creating menu.", L"RBTray", MB_OK | MB_ICONERROR);
+        MessageBox(NULL, L"创建菜单失败。", L"RBTray", MB_OK | MB_ICONERROR);
         return;
     }
-    AppendMenu(hMenu, MF_STRING, IDM_ABOUT,   L"About RBTray");
-    AppendMenu(hMenu, MF_STRING, IDM_EXIT,    L"Exit RBTray");
+    AppendMenu(hMenu, MF_STRING, IDM_ABOUT,   L"关于 RBTray");
+    AppendMenu(hMenu, MF_STRING, IDM_EXIT,    L"退出 RBTray");
     AppendMenu(hMenu, MF_SEPARATOR, 0, NULL); //--------------
-    AppendMenu(hMenu, MF_STRING, IDM_CLOSE,   L"Close Window");
-    AppendMenu(hMenu, MF_STRING, IDM_RESTORE, L"Restore Window");
+    AppendMenu(hMenu, MF_STRING, IDM_CLOSE,   L"关闭窗口");
+    AppendMenu(hMenu, MF_STRING, IDM_RESTORE, L"还原窗口");
 
     GetCursorPos(&point);
     SetForegroundWindow(_hwndHook);
@@ -333,18 +335,18 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*
         if (shouldExit) {
             SendMessage(_hwndHook, WM_CLOSE, 0, 0);
         } else {
-            MessageBox(NULL, L"RBTray is already running.", L"RBTray", MB_OK | MB_ICONINFORMATION);
+            MessageBox(NULL, L"RBTray 已在运行中。", L"RBTray", MB_OK | MB_ICONINFORMATION);
         }
         return 0;
     }
 
     if (useHook) {
         if (!(_hLib = LoadLibrary(L"RBHook.dll"))) {
-            MessageBox(NULL, L"Error loading RBHook.dll.", L"RBTray", MB_OK | MB_ICONERROR);
+            MessageBox(NULL, L"加载 RBHook.dll 失败。", L"RBTray", MB_OK | MB_ICONERROR);
             return 0;
         }
         if (!RegisterHook(_hLib)) {
-            MessageBox(NULL, L"Error setting hook procedure.", L"RBTray", MB_OK | MB_ICONERROR);
+            MessageBox(NULL, L"安装鼠标钩子失败。", L"RBTray", MB_OK | MB_ICONERROR);
             return 0;
         }
     }
@@ -361,12 +363,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*
     wc.lpszMenuName  = NULL;
     wc.lpszClassName = NAME;
     if (!RegisterClass(&wc)) {
-        MessageBox(NULL, L"Error creating window class", L"RBTray", MB_OK | MB_ICONERROR);
+        MessageBox(NULL, L"注册窗口类失败", L"RBTray", MB_OK | MB_ICONERROR);
         return 0;
     }
 
     if (!(_hwndHook = CreateWindow(NAME, NAME, WS_OVERLAPPED, 0, 0, 0, 0, (HWND)NULL, (HMENU)NULL, (HINSTANCE)hInstance, (LPVOID)NULL))) {
-        MessageBox(NULL, L"Error creating window", L"RBTray", MB_OK | MB_ICONERROR);
+        MessageBox(NULL, L"创建窗口失败", L"RBTray", MB_OK | MB_ICONERROR);
         return 0;
     }
 
@@ -378,7 +380,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*
 
     BOOL registeredHotKey = RegisterHotKey(_hwndHook, 0, MOD_ALT | MOD_CONTROL, VK_DOWN);
     if (!registeredHotKey) {
-        MessageBox(NULL, L"Couldn't register hotkey", L"RBTray", MB_OK | MB_ICONERROR);
+        MessageBox(NULL, L"注册热键失败（Ctrl+Alt+↓ 可能已被占用）", L"RBTray", MB_OK | MB_ICONERROR);
     }
 
     MSG msg;

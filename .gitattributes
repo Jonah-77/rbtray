@@ -1,0 +1,8 @@
+# RBTray.rc 是 GBK 编码（rc.exe 用 #pragma code_page(936) 解析），
+# 必须按字节原样保存，禁止 git 做换行转换或编码归一化。
+RBTray.rc -text
+RBTray.ico binary
+x64/*.exe binary
+x64/*.dll binary
+x86/*.exe binary
+x86/*.dll binary
