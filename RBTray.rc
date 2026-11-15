@@ -50,20 +50,25 @@ END
 // Dialog
 //
 
-IDD_ABOUT DIALOGEX 0, 0, 239, 170
+IDD_ABOUT DIALOGEX 0, 0, 270, 216
 STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
 CAPTION "关于 RBTray"
 FONT 9, "Microsoft YaHei UI", 400, 0, 0x1
 BEGIN
     ICON            IDI_RBTRAY,IDC_STATIC,7,7,20,20
-    LTEXT           "RBTray 4.14 · 简体中文版\nhttps://github.com/benbuck/rbtray",IDC_STATIC,38,7,194,22
-    LTEXT           "本程序遵循 GNU 通用公共许可证 (GPL) 发布。",IDC_STATIC,38,32,194,12
-    LTEXT           "版权所有 (c) 1998-2011",IDC_STATIC,38,48,194,10
-    LTEXT           "Nikolay Redko\r\nhttp://rbtray.sourceforge.net/",IDC_STATIC,38,59,194,20
-    LTEXT           "J.D. Purcell\r\nhttp://www.moitah.net/",IDC_STATIC,38,79,194,20
-    LTEXT           "版权所有 (c) 2015",IDC_STATIC,38,101,194,10
-    LTEXT           "Benbuck Nason\r\nhttps://github.com/benbuck/",IDC_STATIC,38,112,194,20
-    DEFPUSHBUTTON   "确定",IDOK,94,146,50,16
+    LTEXT           "RBTray 4.14 · 简体中文版\nhttps://github.com/benbuck/rbtray",IDC_STATIC,38,7,225,22
+    LTEXT           "本程序遵循 GNU 通用公共许可证 (GPL) 发布。",IDC_STATIC,38,32,225,12
+    GROUPBOX        "使用说明",IDC_STATIC,7,50,256,106
+    LTEXT           "最小化到托盘（任选一种）：",IDC_STATIC,14,63,242,10
+    LTEXT           "1. 右键点击窗口的最小化按钮",IDC_STATIC,14,76,242,10
+    LTEXT           "2. 按住 Shift 右键点击标题栏",IDC_STATIC,14,88,242,10
+    LTEXT           "3. 按 Ctrl + Alt + 下方向键",IDC_STATIC,14,100,242,10
+    LTEXT           "单击托盘图标还原窗口，右键图标弹出菜单。",IDC_STATIC,14,114,242,10
+    LTEXT           "冲突时加 --no-hook；UWP 应用无法最小化。",IDC_STATIC,14,128,242,10
+    LTEXT           "退出：托盘菜单选 退出 RBTray，或运行 --exit。",IDC_STATIC,14,140,242,10
+    LTEXT           "版权所有 (c) 1998-2011 Nikolay Redko / J.D. Purcell",IDC_STATIC,7,162,256,10
+    LTEXT           "版权所有 (c) 2015 Benbuck Nason；汉化 Jonah-77",IDC_STATIC,7,174,256,10
+    DEFPUSHBUTTON   "确定",IDOK,110,196,50,16
 END
 
 
